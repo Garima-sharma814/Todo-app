@@ -18,6 +18,16 @@ mongoose.connect("mongod://localhost:27017/todoDB");
 const port = 3000;
 const hostname = "127.0.0.1";
 
+const todoSchema = new mongoose.Schema({
+  name: String
+});
+
+const Todo = new mongoose.model("todo", todoSchema);
+
+const todo = new Todo({
+  name: "buyFood"
+});
+
 // WeekEnd list
 app.get("/", (req, res) => {
   let day = date();

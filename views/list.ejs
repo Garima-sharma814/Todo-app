@@ -1,0 +1,25 @@
+<%- include("header") -%>
+  <div class="box" id="heading">
+    <h1>
+      <%=listName%>
+    </h1>
+  </div>
+  <div class="box">
+    <% for(var i=0; i<addeditems.length; i++){ %>
+      <% if(addeditems[i]==="" ){ %>
+        <% console.log("Please add something") %>
+          <% }else{ %>
+            <div class="item">
+              <input type="checkbox">
+              <p>
+                <%= addeditems[i] %>
+              </p>
+            </div>
+            <% } %>
+              <% } %>
+                <form class="item" action="/" method="post">
+                  <input type="text" name="newItem" placeholder="Enter New Item" autocomplete="off">
+                  <button type="submit" name="list" value=<%=listName %>>+</button>
+                </form>
+  </div>
+  <%- include("footer") -%>

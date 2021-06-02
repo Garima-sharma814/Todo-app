@@ -1,19 +1,15 @@
 const bodyParser = require("body-parser");
 const express = require("express");
 const mongoose = require("mongoose");
-const date = require(__dirname+"/date.js");
 
 const app = express();
-
-var items=["Eat", "Code", "Sleep"];
-var workitems=[];
 
 app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("static"));
 
-mongoose.connect("mongod://localhost:27017/todoDB");
+mongoose.connect("mongodb://localhost:27017/todoDB",{useNewUrlParser: true,useUnifiedTopology: true });
 
 const port = 3000;
 const hostname = "127.0.0.1";
@@ -22,27 +18,43 @@ const todoSchema = new mongoose.Schema({
   name: String
 });
 
-const Todo = new mongoose.model("todo", todoSchema);
+const Todo = new mongoose.model("todo", todoSchema); //todo is the collection 
 
-const todo = new Todo({
+const item1 = new Todo({
   name: "buyFood"
 });
+const item2 = new Todo({
+  name: "eat food"
+});
+const item3 = new Todo({
+  name: "code"
+});
 
+const defaultitems = [item1,item2,item3];
 // WeekEnd list
 app.get("/", (req, res) => {
-  let day = date();
-  res.render("list", { listName: day , addeditems: items} );
+  Todo.find({}, (err, itemsfound)=>{
+    if(itemsfound.length===0){
+      Todo.insertMany(defaultitems, (err)=>{
+        if(err){
+          console.log(err);
+        }else{
+          console.log("inserted");
+        }
+      })    
+    }else{
+      res.render("list", { listName: "Today" , addeditems: itemsfound} );
+    }
+  });
 });
 
 app.post("/", (req,res)=>{
-  var item = req.body.newItem;
-  if(req.body.list === "Work"){
-    workitems.push(item);
-    res.redirect("/work");
-  }else{
-    items.push(item);
-    res.redirect("/");
-  }
+  const itemName = req.body.newItem;
+  const item = new Todo({
+    name: itemName
+  });
+  item.save();
+  res.redirect("/");
 });
 
 // Work list 

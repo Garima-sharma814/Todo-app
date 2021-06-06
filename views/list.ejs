@@ -9,12 +9,14 @@
       <% if(addeditems[i]==="" ){ %>
         <% console.log("Please add something") %>
           <% }else{ %>
+            <form action="/delete" method="POST">
             <div class="item">
-              <input type="checkbox">
+              <input type="checkbox" name="checkbox" onChange="this.form.submit()"  value="<%=addeditems[i]._id%>" >
               <p>
-                <%= addeditems[i] %>
+                <%= addeditems[i].name %>
               </p>
             </div>
+          </form>
             <% } %>
               <% } %>
                 <form class="item" action="/" method="post">

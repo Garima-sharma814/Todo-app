@@ -21,16 +21,9 @@ const todoSchema = new mongoose.Schema({
 const Todo = new mongoose.model("todo", todoSchema); //todo is the collection 
 
 const item1 = new Todo({
-  name: "buyFood"
+  name: "Yeah! You are all done,add more items to start working"
 });
-const item2 = new Todo({
-  name: "eat food"
-});
-const item3 = new Todo({
-  name: "code"
-});
-
-const defaultitems = [item1,item2,item3];
+const defaultitems = [item1];
 // WeekEnd list
 app.get("/", (req, res) => {
   Todo.find({}, (err, itemsfound)=>{
@@ -40,6 +33,7 @@ app.get("/", (req, res) => {
           console.log(err);
         }else{
           console.log("inserted");
+          res.redirect("/");
         }
       })    
     }else{
@@ -57,6 +51,17 @@ app.post("/", (req,res)=>{
   res.redirect("/");
 });
 
+app.post("/delete", (req, res)=>{
+  const checkedItemID = req.body.checkbox;
+  Todo.findByIdAndRemove(checkedItemID , (err)=>{
+      if(err){
+        console.log(err);
+        }else{
+          console.log("deleted");
+        }
+        res.redirect("/");
+    })
+  })   
 // Work list 
 app.get("/work", (req,res)=>{
   res.render("list", {listName: "Work List", addeditems: workitems})

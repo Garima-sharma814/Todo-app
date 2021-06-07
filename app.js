@@ -9,9 +9,9 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("static"));
 
-mongoose.connect("mongodb://localhost:27017/todoDB",{useNewUrlParser: true,useUnifiedTopology: true });
+mongoose.connect("mongodb+srv://admin-Garima:iamgarima@cluster0.wvq5t.mongodb.net/todoDB",{useNewUrlParser: true,useUnifiedTopology: true });
 
-const port = 3000;
+const port = process.env.PORT;
 const hostname = "127.0.0.1";
 
 const todoSchema = new mongoose.Schema({
@@ -67,8 +67,10 @@ app.get("/work", (req,res)=>{
   res.render("list", {listName: "Work List", addeditems: workitems})
 });
 
-
 //Server 
+if (port == null || port == "") {
+  port = 8000;
+}
 app.listen(port, () => {
   console.log(`The server is running at http://${hostname}:${port}/`);
 });

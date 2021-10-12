@@ -21,7 +21,7 @@ const todoSchema = new mongoose.Schema({
 const Todo = new mongoose.model("todo", todoSchema); //todo is the collection 
 
 const item1 = new Todo({
-  name: "Yeah! You are all done,add more items to start working"
+  name: "Yeah! You are all done, add more items to start working"
 });
 const defaultitems = [item1];
 // WeekEnd list
